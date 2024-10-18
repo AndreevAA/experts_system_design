@@ -8,3 +8,4 @@ class Rule:
         self.out_node = out_node
         self.node_arr = node_arr  # массив входных вершин, связанных связкой И
         self.label = label  # открытое/закрытое/запрещенное
+

@@ -29,20 +29,7 @@ class Search:
         self.no_solution_flg = 1  # флаг отсутствия решения
         self.no_label = 1  # флаг отсутствия метки
 
-    '''
-    in_node_arr
-    '''
     def run(self, goal_node: Node, in_node_arr: [Node]):
-        """
-                Выполняет определенную логику для достижения целевого узла.
-
-                :param goal_node: Узел, который необходимо достичь.
-                                  Это конечный узел в процессе поиска.
-                :param in_node_arr: Список узлов, которые участвуют в процессе
-                                    поиска. Этот массив содержит узлы,
-                                    которые будут использованы для анализа
-                                    и построения пути к целевому узлу. Список закрытых узлов.
-                """
 
         self.goal_node = goal_node  # установка целевого узла
         self.open_node_st.push(goal_node)  # добавление целевого узла в стек
@@ -50,7 +37,7 @@ class Search:
 
         # Основной цикл поиска
         while self.solution_flg and self.no_solution_flg:
-            rule_cnt = self.child_search()  # поиск детей для текущего узла
+            rule_cnt = self.child_search()
 
             # если решение найдено
             if self.solution_flg == 0:
@@ -68,7 +55,6 @@ class Search:
     def child_search(self):
         """
         Ищет подходящие правила среди открытых узлов и обрабатывает их.
-
         :return: Количество обработанных правил.
         """
         processed_rules_count = 0  # Счетчик обработанных правил
@@ -83,11 +69,6 @@ class Search:
         return processed_rules_count  # Возврат количества обработанных правил
 
     def __process_rule(self, rule: Rule):
-        """
-        Обрабатывает текущее правило.
-
-        :param rule: Правило, которое необходимо обработать.
-        """
         active_node = self.open_node_st.peek()  # Получение текущего узла
         print(f'[Rule {rule.number}] Current rule')
         print(f'[Node {active_node.number}] Current node')
@@ -123,12 +104,6 @@ class Search:
             print(f'[Rule {rule.number}] did not match any conditions')
 
     def __check_goal(self, rule: Rule) -> int:
-        """
-        Проверяет, достигнута ли цель.
-
-        :param rule: Правило, которое проверяется.
-        :return: 1, если цель достигнута, иначе 0.
-        """
         goal_found = rule.out_node == self.open_node_st.peek()
         if goal_found:
             self.print_info(rule)

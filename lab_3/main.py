@@ -45,13 +45,12 @@ def test_1():
     node31 = Node(31)
     node33 = Node(33)
 
-    # Определение массива правил, связывающих узлы
     rule_arr = [
-        Rule(101, node3, [node1, node2]),  # Правило для перехода к node3 из node1 и node2
-        Rule(102, node7, [node3, node2, node4]),  # Правило для перехода к node7
-        Rule(103, node4, [node5, node6]),  # Правило для перехода к node4
-        Rule(104, node3, [node8, node31]),  # Еще одно правило для node3
-        Rule(105, node14, [node7, node9]),  # Правило для перехода к node14
+        Rule(101, node3, [node1, node2]),
+        Rule(102, node7, [node3, node2, node4]),
+        Rule(103, node4, [node5, node6]),
+        Rule(104, node3, [node8, node31]),
+        Rule(105, node14, [node7, node9]),
         Rule(106, node9, [node4, node18, node11]),
         Rule(107, node11, [node12, node13]),
         Rule(108, node33, [node21, node15]),
@@ -64,9 +63,8 @@ def test_1():
         Rule(116, node19, [node13, node20, node24])
     ]
 
-    # Запуск поиска с заданным целевым узлом 14 и массивом узлов [17, 20, 24, 24]
-    Search(rule_arr).run(node14, [node17, node20, node24, node12, node13])
-    # Search(rule_arr).run(node14, in_node_arr=)
+    Search(rule_arr).run(node14, [node5, node6, node2, node1, node18,
+                                  node22, node23, node7, node13])
 
 
 if __name__ == "__main__":

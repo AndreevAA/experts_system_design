@@ -27,9 +27,11 @@ class Search:
         while self.found_solution and self.no_solution:
             rule_count = self.search_parent_rules()  # Поиск родительских правил
 
+            # Найдено решение
             if not self.found_solution:
                 return
 
+            # Нет правил для обработки
             if rule_count == 0:
                 self.no_solution = False
                 print("Решение не найдено")
@@ -42,7 +44,7 @@ class Search:
                 continue  # Переход к следующему правилу, если уже обработано
 
             if self.are_closed_nodes_covered(rule.node_arr):
-                count += self.process_rule(rule)  # Обработка правила и увеличение счетчика
+                count += self.process_rule(rule)  # Обработка правила и увеличение счетчика, если все входные узлы правила находятся в списке закрытых узлов.
 
         print(f'Доказано {count} правил')
         return count
@@ -60,6 +62,7 @@ class Search:
         self.closed_nodes.append(rule.out_node)  # Добавляем выходную ноду в список закрытых
         self.close_nodes(rule.node_arr)  # Закрываем входные ноды
 
+        # целевое правило совпадает с текущим
         if rule.out_node == self.target:
             self.found_solution = False
             print(f'[Правило {rule.number}] выходная нода совпадает с целевой')

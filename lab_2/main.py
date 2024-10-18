@@ -1,6 +1,8 @@
 from Search import Search
 from Node import Node
 from Rule import Rule
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 def show(arr: list):
@@ -12,7 +14,22 @@ def show(arr: list):
             print(f'{arr[i]} <- ', end='')
         else:
             print(f'{arr[i]}')
+def draw_graph(rule_arr):
+    G = nx.DiGraph()  # создаем ориентированный граф
 
+    for rule in rule_arr:
+        # добавляем узел, если он еще не добавлен
+        G.add_node(rule.node_from.id)
+        for dependency in rule.dependencies:
+            G.add_node(dependency.id)  # добавляем зависимости как узлы
+            G.add_edge(dependency.id, rule.node_from.id)  # добавляем ориентированное ребро
+
+    # рисуем граф
+    plt.figure(figsize=(12, 8))
+    pos = nx.spring_layout(G)  # устанавливаем позицию узлов
+    nx.draw(G, pos, with_labels=True, node_size=2000, node_color='lightblue', font_size=12)
+    plt.title("Initial Graph Representation")
+    plt.show()
 
 def test_1():
     node1 = Node(1)
@@ -62,6 +79,12 @@ def test_1():
 
     Search(rule_arr).run(node14, [node5, node6, node2, node1, node18,
                                  node22, node23, node7, node13])
+    # Search(rule_arr).run(node14, [node5, node6, node2])
+    # Search(rule_arr).run(node14, [node5])
+    # Search(rule_arr).run(node14, [node5, node6, node2, node1, node18,
+    #                               node22])
+    # Search(rule_arr).run(node14, [node5, node6, node2, node1, node18,
+    #                               node22, node23, node7, node11])
 
 
 if __name__ == "__main__":

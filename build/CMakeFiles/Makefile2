@@ -54,79 +54,79 @@ RM = /usr/local/Cellar/cmake/3.31.0/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/andreev/Downloads/ESD-master
+CMAKE_SOURCE_DIR = /Users/andreev/bmstu/experts_system_design
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/andreev/Downloads/ESD-master/build
+CMAKE_BINARY_DIR = /Users/andreev/bmstu/experts_system_design/build
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: lab04/all
+all: lab_4/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: lab04/codegen
+codegen: lab_4/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
-preinstall: lab04/preinstall
+preinstall: lab_4/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: lab04/clean
+clean: lab_4/clean
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory lab04
+# Directory level rules for directory lab_4
 
 # Recursive "all" directory target.
-lab04/all: lab04/CMakeFiles/lab04.dir/all
-.PHONY : lab04/all
+lab_4/all: lab_4/CMakeFiles/lab04.dir/all
+.PHONY : lab_4/all
 
 # Recursive "codegen" directory target.
-lab04/codegen: lab04/CMakeFiles/lab04.dir/codegen
-.PHONY : lab04/codegen
+lab_4/codegen: lab_4/CMakeFiles/lab04.dir/codegen
+.PHONY : lab_4/codegen
 
 # Recursive "preinstall" directory target.
-lab04/preinstall:
-.PHONY : lab04/preinstall
+lab_4/preinstall:
+.PHONY : lab_4/preinstall
 
 # Recursive "clean" directory target.
-lab04/clean: lab04/CMakeFiles/lab04.dir/clean
-.PHONY : lab04/clean
+lab_4/clean: lab_4/CMakeFiles/lab04.dir/clean
+.PHONY : lab_4/clean
 
 #=============================================================================
-# Target rules for target lab04/CMakeFiles/lab04.dir
+# Target rules for target lab_4/CMakeFiles/lab04.dir
 
 # All Build rule for target.
-lab04/CMakeFiles/lab04.dir/all:
-	$(MAKE) $(MAKESILENT) -f lab04/CMakeFiles/lab04.dir/build.make lab04/CMakeFiles/lab04.dir/depend
-	$(MAKE) $(MAKESILENT) -f lab04/CMakeFiles/lab04.dir/build.make lab04/CMakeFiles/lab04.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/andreev/Downloads/ESD-master/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target lab04"
-.PHONY : lab04/CMakeFiles/lab04.dir/all
+lab_4/CMakeFiles/lab04.dir/all:
+	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/depend
+	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/andreev/bmstu/experts_system_design/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target lab04"
+.PHONY : lab_4/CMakeFiles/lab04.dir/all
 
 # Build rule for subdir invocation for target.
-lab04/CMakeFiles/lab04.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/Downloads/ESD-master/build/CMakeFiles 6
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab04/CMakeFiles/lab04.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/Downloads/ESD-master/build/CMakeFiles 0
-.PHONY : lab04/CMakeFiles/lab04.dir/rule
+lab_4/CMakeFiles/lab04.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/bmstu/experts_system_design/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab_4/CMakeFiles/lab04.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/bmstu/experts_system_design/build/CMakeFiles 0
+.PHONY : lab_4/CMakeFiles/lab04.dir/rule
 
 # Convenience name for target.
-lab04: lab04/CMakeFiles/lab04.dir/rule
+lab04: lab_4/CMakeFiles/lab04.dir/rule
 .PHONY : lab04
 
 # codegen rule for target.
-lab04/CMakeFiles/lab04.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f lab04/CMakeFiles/lab04.dir/build.make lab04/CMakeFiles/lab04.dir/codegen
-.PHONY : lab04/CMakeFiles/lab04.dir/codegen
+lab_4/CMakeFiles/lab04.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/codegen
+.PHONY : lab_4/CMakeFiles/lab04.dir/codegen
 
 # clean rule for target.
-lab04/CMakeFiles/lab04.dir/clean:
-	$(MAKE) $(MAKESILENT) -f lab04/CMakeFiles/lab04.dir/build.make lab04/CMakeFiles/lab04.dir/clean
-.PHONY : lab04/CMakeFiles/lab04.dir/clean
+lab_4/CMakeFiles/lab04.dir/clean:
+	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/clean
+.PHONY : lab_4/CMakeFiles/lab04.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

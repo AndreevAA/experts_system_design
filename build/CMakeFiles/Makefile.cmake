@@ -7,12 +7,12 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/andreev/Downloads/ESD-master/CMakeLists.txt"
+  "/Users/andreev/bmstu/experts_system_design/CMakeLists.txt"
   "CMakeFiles/3.31.0/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.0/CMakeSystem.cmake"
-  "/Users/andreev/Downloads/ESD-master/cmake/CompileOptions.cmake"
-  "/Users/andreev/Downloads/ESD-master/lab04/CMakeLists.txt"
+  "/Users/andreev/bmstu/experts_system_design/cmake/CompileOptions.cmake"
+  "/Users/andreev/bmstu/experts_system_design/lab_4/CMakeLists.txt"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCInformation.cmake"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCXXInformation.cmake"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCommonLanguageInclude.cmake"
@@ -54,10 +54,10 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "lab04/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "lab_4/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "lab04/CMakeFiles/lab04.dir/DependInfo.cmake"
+  "lab_4/CMakeFiles/lab04.dir/DependInfo.cmake"
   )

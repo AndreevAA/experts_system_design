@@ -57,10 +57,10 @@ RM = /usr/local/Cellar/cmake/3.31.0/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/andreev/Downloads/ESD-master
+CMAKE_SOURCE_DIR = /Users/andreev/bmstu/experts_system_design
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/andreev/Downloads/ESD-master/build
+CMAKE_BINARY_DIR = /Users/andreev/bmstu/experts_system_design/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,7 +68,7 @@ CMAKE_BINARY_DIR = /Users/andreev/Downloads/ESD-master/build
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
-	/usr/local/Cellar/cmake/3.30.5/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/Cellar/cmake/3.31.0/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/Downloads/ESD-master/build/CMakeFiles /Users/andreev/Downloads/ESD-master/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/bmstu/experts_system_design/build/CMakeFiles /Users/andreev/bmstu/experts_system_design/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/Downloads/ESD-master/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/andreev/bmstu/experts_system_design/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -126,7 +126,7 @@ lab04: cmake_check_build_system
 
 # fast build rule for target.
 lab04/fast:
-	$(MAKE) $(MAKESILENT) -f lab04/CMakeFiles/lab04.dir/build.make lab04/CMakeFiles/lab04.dir/build
+	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/build
 .PHONY : lab04/fast
 
 # Help Target

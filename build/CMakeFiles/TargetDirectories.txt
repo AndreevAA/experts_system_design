@@ -1,5 +1,5 @@
-/Users/andreev/Downloads/ESD-master/build/CMakeFiles/edit_cache.dir
-/Users/andreev/Downloads/ESD-master/build/CMakeFiles/rebuild_cache.dir
-/Users/andreev/Downloads/ESD-master/build/lab04/CMakeFiles/lab04.dir
-/Users/andreev/Downloads/ESD-master/build/lab04/CMakeFiles/edit_cache.dir
-/Users/andreev/Downloads/ESD-master/build/lab04/CMakeFiles/rebuild_cache.dir
+/Users/andreev/bmstu/experts_system_design/build/CMakeFiles/edit_cache.dir
+/Users/andreev/bmstu/experts_system_design/build/CMakeFiles/rebuild_cache.dir
+/Users/andreev/bmstu/experts_system_design/build/lab_4/CMakeFiles/lab04.dir
+/Users/andreev/bmstu/experts_system_design/build/lab_4/CMakeFiles/edit_cache.dir
+/Users/andreev/bmstu/experts_system_design/build/lab_4/CMakeFiles/rebuild_cache.dir

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 project(ESD
-        HOMEPAGE_URL https://github.com/wcdbmv/ESD
+        HOMEPAGE_URL https://github.com/AndreevAA/experts_system_design
         LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -11,4 +11,4 @@ include(cmake/CompileOptions.cmake)
 
 set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
-add_subdirectory(lab04)
+add_subdirectory(lab_4)

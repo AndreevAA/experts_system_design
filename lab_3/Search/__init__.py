@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 
 
-# Reverse search from goal to deep
+# Обратный поиск в глубину от цели
+
 # Класс для поиска маршрута в графе
 # 1. Обратный поиск (основной метод)
 # 2. Поиск детей для текущей цели
@@ -29,29 +30,83 @@ class Search:
         self.no_solution_flg = 1  # флаг, указывающий на отсутствие решения
         self.no_label = 1  # флаг, указывающий на отсутствие метки
 
+        self.node_positions = {}  # Словарь для хранения фиксированных позиций узлов
+        self.visualize = False
+
+    def visualize_graph(self):
+        if self.visualize:
+            G = nx.Graph()
+
+            # Добавляем узлы в граф с их статусами
+            for node in self.close_node_lst + self.prohibited_node_lst + [self.goal_node]:
+                G.add_node(node.number, label=str(node.flag))
+
+            # Добавляем ребра для каждой из правил
+            for rule in self.rule_arr:
+                for node in rule.node_arr:
+                    G.add_edge(node.number, rule.out_node.number)
+
+            # Определяем цвета для узлов
+            color_map_nodes = []
+            for node in G.nodes():
+                if node in [n.number for n in self.open_node_st.elements]:
+                    color_map_nodes.append('lightgreen')  # ОТКРЫТЫЕ
+                elif node in [n.number for n in self.close_node_lst]:
+                    color_map_nodes.append('lightblue')  # ЗАКРЫТЫЕ
+                elif node in [n.number for n in self.prohibited_node_lst]:
+                    color_map_nodes.append('red')  # ЗАПРЕЩЕННЫЕ
+                else:
+                    color_map_nodes.append('grey')  # не помеченные узлы
+
+            # # Определяем цвета для рёбер
+            # color_map_edges = []
+            # for rule in self.rule_arr:
+            #     if rule.label == Label.FORBIDDEN:
+            #         color_map_edges.append('red')  # Закрытые/запрещенные правила
+            #     else:
+            #         color_map_edges.append('black')  # Все остальные правила
+
+            # Если позиции еще не заданы, вычисляем их
+            if not self.node_positions:
+                self.node_positions = nx.spring_layout(G, k=0.5, iterations=10000)
+
+            # Отрисовка узлов и рёбер с фиксированными позициями
+            nx.draw(G, self.node_positions, node_color=color_map_nodes, with_labels=True,
+                    font_weight='bold')
+
+            # Визуализация меток
+            labels = {n: str(n) for n in G.nodes()}
+            nx.draw_networkx_labels(G, self.node_positions, labels=labels)
+
+            plt.title("Визуализация графа поиска")
+            plt.show()
+
     def run(self, goal_node: Node, in_node_arr: [Node]):
         self.goal_node = goal_node
         self.open_node_st.push(goal_node)  # добавляем целевой узел в стек открытых узлов
         self.close_node_lst = in_node_arr  # инициализируем закрытые узлы
 
+        self.visualize_graph()
+
         while self.solution_flg and self.no_solution_flg:  # продолжаем до нахождения решения
             rule_cnt = self.child_search()  # ищем дочерние узлы
 
             if self.solution_flg == 0:
-                print("Solution was found")
+                print("Решение найдено")
                 return
 
             if rule_cnt == 0 and self.open_node_st.length() < 2:
                 self.no_solution_flg = 0
-                print("Solution was not found")
+                print("Решение не найдено")
             elif rule_cnt == 0:
-                print("Backtracking process is going to be launched")
+                print("Запускается процесс обратного поиска")
                 self.backtracking()  # запускаем процесс обратного поиска
 
     def child_search(self):
         cnt_rules = 0  # счетчик правил
 
         for rule in self.rule_arr:  # перебираем все правила
+
             current_node = self.open_node_st.peek()  # получаем текущий узел
             if rule.label != Label.OPEN:  # если правило уже закрыто
                 self.process_closed_rule(rule)  # обрабатываем закрытое правило
@@ -72,20 +127,20 @@ class Search:
         return cnt_rules
 
     def process_closed_rule(self, rule: Rule):
-        print(f'[Rule {rule.number}] was already processed')
+        print(f'[Правило {rule.number}] уже обработано')
         print('-' * 128 + '\n')
 
     def process_applicable_rule(self, rule: Rule):
-        print(f'[Rule {rule.number}] has out node that equals goal one')
+        print(f'[Правило {rule.number}] имеет выходной узел, равный целевому')
         rule.label = Label.VIEWED  # помечаем правило как просмотренное
-        self.open_rule_lst.append(rule)  # добавляем правило в список открытых правил
+        self.open_rule_lst.append(rule)
 
         if not self.add_new_goal(rule.node_arr):  # если новое правило не добавлено
-            print("Label process is going to be launched")  # запускаем процесс маркировки
+            print("Запускается процесс маркировки")  # запускаем процесс маркировки
             self.label()
 
         self.print_info(rule)  # выводим информацию о правиле
-        return 1  # Возвращаем 1, так как правило было успешно обработано
+        return 1
 
     def process_prohibited_rule(self, rule: Rule):
         self.prohibited_rule_lst.append(rule)  # добавляем правило в список запрещенных
@@ -100,8 +155,8 @@ class Search:
             node = self.open_node_st.pop()  # берем текущий узел
             self.close_node_lst.append(node)  # добавляем его в закрытые узлы
 
-            print(f'[Labelling] Rule {rule.number} was added to close rules')
-            print(f'[Labelling] Node {node.number} was added to close nodes')
+            print(f'[Маркировка] Правило {rule.number} было добавлено в закрытые правила')
+            print(f'[Маркировка] Узел {node.number} был добавлен в закрытые узлы')
 
             if node == self.goal_node:  # если узел — целевой
                 self.solution_flg = 0  # устанавливаем флаг решения в 0
@@ -122,11 +177,11 @@ class Search:
         rule.label = Label.FORBIDDEN  # помечаем правило как запрещенное
         self.prohibited_rule_lst.append(rule)  # добавляем его в список запрещенных правил
 
-        print(f'[Backtrack] Rule {rule.number} was added to prohibited rules')
-        print(f'[Backtrack] Node {current_goal.number} was added to prohibited nodes')
+        print(f'[Обратный поиск] Правило {rule.number} было добавлено в запрещенные правила')
+        print(f'[Обратный поиск] Узел {current_goal.number} был добавлен в запрещенные узлы')
 
         for node in rule.node_arr:  # удаляем все узлы, связанные с правилом
-            print(f'[Backtrack] Node {node.number} should be removed from opened nodes')
+            print(f'[Обратный поиск] Узел {node.number} должен быть удален из открытых узлов')
             self.open_node_st.remove_element(node)
         print()
 
@@ -155,17 +210,19 @@ class Search:
 
     def print_info(self, rule: Rule):
         # Печатаем информацию о правиле и списки узлов и правил
-        print(f'[Rule {rule.number}] list of opened nodes: ', end='    ')
+        print(f'[Правило {rule.number}] список открытых узлов: ', end='    ')
         self.open_node_st.show()
-        print(f'[Rule {rule.number}] list of closed nodes: ', end='    ')
+        print(f'[Правило {rule.number}] список закрытых узлов: ', end='    ')
         self.print_nodes(self.close_node_lst)
-        print(f'[Rule {rule.number}] list of prohibited nodes: ', end='')
+        print(f'[Правило {rule.number}] список запрещенных узлов: ', end='')
         self.print_nodes(self.prohibited_node_lst)
-        print(f'[Rule {rule.number}] list of opened rules: ', end='    ')
+        print(f'[Правило {rule.number}] список открытых правил: ', end='    ')
         self.print_rules(self.open_rule_lst)
-        print(f'[Rule {rule.number}] list of closed rules: ', end='    ')
+        print(f'[Правило {rule.number}] список закрытых правил: ', end='    ')
         self.print_rules(self.close_rule_lst)
-        print(f'[Rule {rule.number}] list of prohibited rules: ', end='')
+        print(f'[Правило {rule.number}] список запрещенных правил: ', end='')
         self.print_rules(self.prohibited_rule_lst)
 
         print('-' * 128 + '\n')
+
+        self.visualize_graph()

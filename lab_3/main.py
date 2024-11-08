@@ -33,7 +33,7 @@ def test_1():
     node13 = Node(13)
     node14 = Node(14)
     node15 = Node(15)
-    node17 = Node(17)
+    # node17 = Node(17)
     node18 = Node(18)
     node19 = Node(19)
     node20 = Node(20)
@@ -41,6 +41,7 @@ def test_1():
     node22 = Node(22)
     node23 = Node(23)
     node24 = Node(24)
+    node25 = Node(25)
 
     node31 = Node(31)
     node33 = Node(33)
@@ -54,19 +55,19 @@ def test_1():
         Rule(106, node9, [node4, node18, node11]),
         Rule(107, node11, [node12, node13]),
         Rule(108, node33, [node21, node15]),
+        Rule(109, node19, [node13, node20, node24]),
         Rule(110, node14, [node9, node21]),
-        Rule(111, node9, [node11, node17]),
-        Rule(112, node21, [node17, node19]),
-        Rule(113, node17, [node12, node20]),
+        Rule(111, node9, [node11, node25]),
+        Rule(112, node21, [node25, node19]),
+        Rule(113, node25, [node20, node13]),
         Rule(114, node12, [node22, node23]),
         Rule(115, node21, [node19, node24]),
-        Rule(116, node19, [node13, node20, node24])
     ]
 
     # Search(rule_arr).run(node14, [node5, node6, node2, node1, node18,
                                   #                               node22, node23, node7, node13])
 
-    Search(rule_arr).run(node14, [node17, node20, node24, node12, node13])
+    Search(rule_arr).run(node14, [node11, node20, node24, node12, node13])
 
 
 if __name__ == "__main__":

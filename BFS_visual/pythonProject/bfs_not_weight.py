@@ -7,12 +7,11 @@ import matplotlib.pyplot as plt
 from collections import deque
 
 def bfs_shortest_path(graph, start, goal):
-    # Инициализация очереди для обхода в ширину (BFS) с начальным узлом и путём, содержащим только начальный узел
+
     queue = deque([(start, [start])])
     # Множество для отслеживания посещённых узлов
     visited = set()
 
-    # Вычисление позиций вершин с использованием алгоритма Fruchterman-Reingold
     pos = nx.spring_layout(graph, k=10, iterations=50000)
 
     # Основной цикл обхода в ширину, продолжается, пока есть узлы в очереди
@@ -27,10 +26,8 @@ def bfs_shortest_path(graph, start, goal):
 
         # Проверка, достигли ли мы целевого узла
         if current_node == goal:
-            # Если достигли цели, возвращаем путь
             return path
 
-        # Исследование соседних узлов текущего узла
         for neighbor in graph[current_node]:
             # Проверка, не посещали ли мы соседний узел и не находится ли он в очереди
             if neighbor not in visited and neighbor not in [p[0] for p in queue]:

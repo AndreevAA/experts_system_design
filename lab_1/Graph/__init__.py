@@ -19,7 +19,7 @@ class Graph:
 
         # Добавляем рёбра в граф и помечаем их
         for edge in self.edgeLst:
-            self.G.add_edge(edge.startNode.number, edge.endNode.number, label=edge.startNode.number)
+            self.G.add_edge(edge.startNode.number, edge.endNode.number, label=edge.label)
 
         # Вычисляем позиции узлов динамически
         self.pos = nx.spring_layout(self.G)
@@ -34,8 +34,10 @@ class Graph:
         self.plot_graph(is_bfs=True)
 
         while self.childCounter and self.isSolutionNotFound:
-            print("Очередь: ", end="")
+            print("\nОчередь (открытые узлы): ", end="")
             self.opened.print()
+            print("Закрытые узлы:", self.closed)
+            # print("Открытые узлы:", [node.number for node in self.opened.elements])  # Вывод открытых узлов
 
             self.__bfs_sample_search()
             if self.isSolutionNotFound == 0:
@@ -43,6 +45,8 @@ class Graph:
 
             currentNode = self.opened.get()  # Извлечение текущего узла из очереди
             self.closed.append(currentNode.number)  # Посещение узла
+
+            print("Текущий узел:", currentNode.number)
 
             if self.opened.length() != 0:  # Если есть ещё узлы
                 self.childCounter = 1
@@ -82,8 +86,10 @@ class Graph:
         self.goal = goal  # Установка целевого узла
 
         while self.childCounter and self.isSolutionNotFound:
-            print("Стек: ", end="")
+            print("\nСтек (открытые узлы): ", end="")
             self.opened.print()
+            print("Закрытые узлы:", self.closed)
+            # print("Открытые узлы:", [node.number for node in self.opened.elements])  # Вывод открытых узлов
 
             self.__dfs_sample_search()
             if self.isSolutionNotFound == 0:
@@ -91,6 +97,10 @@ class Graph:
             if self.childCounter == 0 and self.opened.length() > 1:  # Нет потомков
                 currentNode = self.opened.pop()
                 self.closed.append(currentNode.number)
+                print("\nТекущий узел:", currentNode.number)
+                print("Стек (открытые узлы): ", end="")
+                self.opened.print()
+                print("Закрытые узлы:", self.closed)
                 self.childCounter = 1
 
             self.plot_graph(is_bfs=False)
@@ -114,6 +124,12 @@ class Graph:
             edge.used = True
             self.opened.push(edge.endNode)
             self.childCounter = 1
+
+            print()
+            print("Текущий узел:", currentNode.number)
+            print("\nСтек (открытые узлы): ", end="")
+            self.opened.print()
+            print("Закрытые узлы:", self.closed)
 
             if edge.endNode.number == self.goal:
                 self.isSolutionNotFound = 0

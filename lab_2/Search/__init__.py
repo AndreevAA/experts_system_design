@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 
 # Поиск в ширину от данных к целе
-# (include parent method -- looks for closed rules)
 class Search:
     def __init__(self, rule_arr: [Rule]):
         self.rule_arr = rule_arr  # Массив правил (база знаний)
@@ -24,25 +23,6 @@ class Search:
 
         self.node_positions = {}  # Словарь для хранения фиксированных позиций узлов
 
-    def run(self, goal_node: Node, in_node_arr: [Node]):
-        # Устанавливаем целевой узел и помещаем его в стек открытых узлов
-        self.goal_node = goal_node
-        self.open_node_st.push(goal_node)
-        self.close_node_lst = in_node_arr  # Заполняем закрытые узлы
-
-        while self.solution_flg and self.no_solution_flg:
-            # Выполняем поиск по родителям и получаем количество обработанных правил
-            rule_cnt = self.parent_search()
-
-            if not self.solution_flg:
-                return
-
-            # Если не осталось правил для обработки, завершаем поиск
-            if rule_cnt == 0:
-                self.no_solution_flg = False
-                print("Решение не найдено")
-
-    # Функция для визуализации графа
     # Функция для визуализации графа
     def draw_graph(self, rule_arr, closed_nodes, prohibited_nodes):
         G = nx.Graph()
@@ -80,6 +60,23 @@ class Search:
         plt.title("Визуализация графа поиска")
         plt.show()
 
+    def run(self, goal_node: Node, in_node_arr: [Node]):
+        # Устанавливаем целевой узел и помещаем его в стек открытых узлов
+        self.goal_node = goal_node
+        self.open_node_st.push(goal_node)
+        self.close_node_lst = in_node_arr  # Заполняем закрытые узлы
+
+        while self.solution_flg and self.no_solution_flg:
+            # Выполняем поиск по родителям и получаем количество обработанных правил
+            rule_cnt = self.parent_search()
+
+            if not self.solution_flg:
+                return
+
+            # Если не осталось правил для обработки, завершаем поиск
+            if rule_cnt == 0:
+                self.no_solution_flg = False
+                print("Решение не найдено")
 
     def parent_search(self):
         cnt_rules = 0  # Счетчик обработанных правил

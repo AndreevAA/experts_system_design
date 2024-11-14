@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=12.5 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/lab05.dir/types/atom.cc.o CMakeFiles/lab05.dir/types/terminal.cc.o CMakeFiles/lab05.dir/unification.cc.o CMakeFiles/lab05.dir/main.cc.o -o lab05

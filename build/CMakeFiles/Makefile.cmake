@@ -12,7 +12,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.31.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.0/CMakeSystem.cmake"
   "/Users/andreev/bmstu/experts_system_design/cmake/CompileOptions.cmake"
-  "/Users/andreev/bmstu/experts_system_design/lab_4/CMakeLists.txt"
+  "/Users/andreev/bmstu/experts_system_design/lab_5/CMakeLists.txt"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCInformation.cmake"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCXXInformation.cmake"
   "/usr/local/Cellar/cmake/3.31.0/share/cmake/Modules/CMakeCommonLanguageInclude.cmake"
@@ -54,10 +54,10 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
-  "lab_4/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "lab_5/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "lab_4/CMakeFiles/lab04.dir/DependInfo.cmake"
+  "lab_5/CMakeFiles/lab05.dir/DependInfo.cmake"
   )

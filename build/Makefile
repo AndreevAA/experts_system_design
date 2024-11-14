@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named lab04
+# Target rules for targets named lab05
 
 # Build rule for target.
-lab04: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab04
-.PHONY : lab04
+lab05: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab05
+.PHONY : lab05
 
 # fast build rule for target.
-lab04/fast:
-	$(MAKE) $(MAKESILENT) -f lab_4/CMakeFiles/lab04.dir/build.make lab_4/CMakeFiles/lab04.dir/build
-.PHONY : lab04/fast
+lab05/fast:
+	$(MAKE) $(MAKESILENT) -f lab_5/CMakeFiles/lab05.dir/build.make lab_5/CMakeFiles/lab05.dir/build
+.PHONY : lab05/fast
 
 # Help Target
 help:
@@ -137,7 +137,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... lab04"
+	@echo "... lab05"
 .PHONY : help
 
 

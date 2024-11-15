@@ -240,6 +240,15 @@ lab05_IS_TOP_LEVEL:STATIC=OFF
 //Value Computed by CMake
 lab05_SOURCE_DIR:STATIC=/Users/andreev/bmstu/experts_system_design/lab_5
 
+//Value Computed by CMake
+lab06_BINARY_DIR:STATIC=/Users/andreev/bmstu/experts_system_design/build/lab_6
+
+//Value Computed by CMake
+lab06_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+lab06_SOURCE_DIR:STATIC=/Users/andreev/bmstu/experts_system_design/lab_6
+
 
 ########################
 # INTERNAL cache entries

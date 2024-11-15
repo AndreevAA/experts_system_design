@@ -11,4 +11,5 @@ include(cmake/CompileOptions.cmake)
 
 set(CMAKE_CXX_CLANG_TIDY clang-tidy)
 
-add_subdirectory(lab_4)
+
+add_subdirectory(lab_5)

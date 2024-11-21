@@ -10,15 +10,15 @@ from models import *
 
 
 def normalize_formula(op: Operation):
-    # 1 - избавиться от → и =
-    # Идём по всем элементам
+    # 1 - избавиться от → и = (сделать формулу более простой)
+    # Идём по всем элементам формулы
     for x in op.walk():
         if isinstance(x, Operation):
-            # x → y = ¬x | y
+            # Преобразуем x → y в ¬x | y
             if x.type == OpType.IMPLY:
                 x.type = OpType.OR
                 x.args[0] = Operation(OpType.NOT, [x.args[0]])
-            # x = y = (x & y) | (¬x & ¬y)
+            # Преобразуем x = y в (x & y) | (¬x & ¬y)
             elif x.type == OpType.EQUAL:
                 x.type = OpType.OR
                 a, b = x.args
@@ -29,34 +29,34 @@ def normalize_formula(op: Operation):
                 ])
     print(f'1. Без → и =:\t', op)
 
-    # 2 - пронести отрицание до атомов
+    # 2 - пронести отрицание до атомов (применение закона де Моргана)
     def remove_not(op):
         def is_not(op):
             return isinstance(op, Operation) and op.type == OpType.NOT
 
-        # Если переменная или предикат, то конец
+        # Если связано с переменной или предикатом, заканчиваем
         if isinstance(op, Variable) or isinstance(op, Predicate):
             return op
 
-        # если квантор
+        # Если квантор, продолжаем обработку
         elif isinstance(op, Quantifier):
             op.op = remove_not(op.op)
 
-        # если операция отрицания
+        # Если операция отрицания
         elif is_not(op):
-            op.args[0] = op.args[0].negate()
-            return remove_not(op.args[0])
-        # обычная операция
+            op.args[0] = op.args[0].negate()  # Инвертируем аргумент
+            return remove_not(op.args[0])  # Рекурсивно обрабатываем
+        # Обычная операция
         else:
             for i in range(len(op.args)):
                 op.args[i] = remove_not(op.args[i])
         return op
 
-    op = remove_not(op)
+    op = remove_not(op)  # Применяем преобразование к формуле
     print(f'2. де Морган:\t', op)
 
-    # 3. переименование связанных переменных
-    prefix = []  # для кванторов
+    # 3. переименование связанных переменных (для предотвращения конфликта имен)
+    prefix = []  # для хранения кванторов
     var_rename_counter = defaultdict(int)
 
     def rename_vars(op):
@@ -71,8 +71,8 @@ def normalize_formula(op: Operation):
             var_rename_counter[var_name] += 1
 
             new_name = f'{var_name}{var_rename_counter[var_name]}'
-            op.op.rename_var(var_name, new_name)
-            prefix.append(Quantifier(op.type, new_name, None))
+            op.op.rename_var(var_name, new_name)  # Переименовываем переменную
+            prefix.append(Quantifier(op.type, new_name, None))  # Добавляем квантор в префикс
             return rename_vars(op.op)
         return op
 
@@ -80,7 +80,7 @@ def normalize_formula(op: Operation):
     pretty_prefix = ' '.join([str(x) for x in prefix])
     print(f'3. Без кванторов:', pretty_prefix, op)
 
-    # 4. преобразование к КНФ (дистрибутивность сверху вниз, пока | не будет только с примитивами)
+    # 4. преобразование к КНФ (дистрибутивное преобразование)
     def is_disjunct(op):
         if isinstance(op, Variable) or isinstance(op, Predicate):
             return True
@@ -91,21 +91,21 @@ def normalize_formula(op: Operation):
     def make_disjuncts(op):
         if is_disjunct(op):
             return
-        if op.type == OpType.AND:  # все ок
+        if op.type == OpType.AND:  # Если это конъюнкция
             for arg in op.args:
                 make_disjuncts(arg)
             return
         a, b = op.args
-        if is_disjunct(a) and is_disjunct(b):  # тоже ок
+        if is_disjunct(a) and is_disjunct(b):  # Если оба являются дизъюнктами
             return
-        # иначе дистрибутивность
+        # Переходим к дистрибутивности
         if is_disjunct(a):
-            a, b = b, a  # конъюнкцию помещаем в a
+            a, b = b, a  # Конъюнкцию помещаем в a
         op.type = OpType.AND
-        op.args[0] = Operation(OpType.OR, [a.args[0], b])
+        op.args[0] = Operation(OpType.OR, [a.args[0], b])  # Создаем дизъюнкции
         op.args[1] = Operation(OpType.OR, [a.args[1], b])
         for arg in op.args:
-            make_disjuncts(arg)
+            make_disjuncts(arg)  # Рекурсивно применяем
         return
 
     make_disjuncts(op)
@@ -117,9 +117,9 @@ def normalize_formula(op: Operation):
     def simplify_disjunct(op):
         vars = dict()
         if isinstance(op, Variable) or isinstance(op, Predicate):
-            raw_vars = [op]
+            raw_vars = [op]  # Базовый случай
         else:
-            raw_vars = list(op.walk())
+            raw_vars = list(op.walk())  # Ищем все переменные в формуле
         for x in raw_vars:
             if isinstance(x, Variable) or isinstance(x, Predicate):
                 neg = x.negative
@@ -127,25 +127,25 @@ def normalize_formula(op: Operation):
                     name = x.name
                 else:
                     name = x.name + '_' + '_'.join(
-                        str(a) for a in x.args)  # чтобы отличать предикаты с разными переменными
+                        str(a) for a in x.args)  # Уникальная идентификация предикатов
                 if vars.get(name) is None:
                     vars[name] = [x, set([neg])]
                 else:
                     vars[name][1].add(neg)
-        vars = [var for k, (var, s) in vars.items() if len(s) == 1]
+        vars = [var for k, (var, s) in vars.items() if len(s) == 1]  # Отбираем серьезные дизъюнкты
         return vars
 
     def extract_disjuncts(op):
         if is_disjunct(op):
             op = simplify_disjunct(op)
             if len(op) > 0:
-                disjuncts.append(op)
+                disjuncts.append(op)  # Добавляем к списку дизъюнктов
             return
         a, b = op.args
         extract_disjuncts(a)
         extract_disjuncts(b)
 
-    extract_disjuncts(op)
+    extract_disjuncts(op)  # Извлекаем дизъюнкты из финальной формулы
 
     print('5. Извлечённые дизъюнкты:')
     for i, dj in enumerate(disjuncts):
@@ -156,9 +156,9 @@ def normalize_formula(op: Operation):
 
 
 if __name__ == '__main__':
-    # res = formula.parseString('∀x ((p1(y) → p2(x, y)) → (p2(x, y))) | p2(x, y)')[0]
+    # Пример входной формулы для нормализации
     res = formula.parseString('¬(x & y & z)')[0]
     print(res)
 
-    res = normalize_formula(res)
-    # print(res)
+    res = normalize_formula(res)  # Нормализуем формулу
+    # print(res)  # Можно раскомментировать, чтобы отобразить результат

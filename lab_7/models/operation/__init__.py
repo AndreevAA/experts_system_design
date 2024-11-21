@@ -8,37 +8,45 @@ from models.predicate import *
 
 class Operation:
     def __init__(self, op_type: OpType, args: typing.List):
-        assert op_type not in [OpType.ALL, OpType.EXISTS]
+        # Инициализация операции с указанным типом и аргументами
+        assert op_type not in [OpType.ALL, OpType.EXISTS]  # Проверка, что тип не является квантором
         self.type = op_type
         self.args = args
 
     def walk(self):
+        # Генератор, который обходится по всем аргументам операции
         for arg in self.args:
             for x in arg.walk():
                 yield x
             yield arg
 
     def negate(self):
-        assert self.type in [OpType.OR, OpType.AND, OpType.NOT]
+        # Инвертирует операцию, изменяя тип и аргументы
+        assert self.type in [OpType.OR, OpType.AND, OpType.NOT]  # Проверка допустимых типов
         if self.type == OpType.NOT:
-            return self.args[0]
+            return self.args[0]  # Если это NOT, возвращаем аргумент
 
+        # Меняем тип операции с AND на OR или наоборот
         self.type = OpType.OR if self.type == OpType.AND else OpType.AND
+        # Инвертируем аргументы
         for i, arg in enumerate(self.args):
             self.args[i] = Operation(OpType.NOT, [self.args[i]])
         return self
 
     def rename_var(self, old_name, new_name):
+        # Переименовывает переменные в аргументах
         for arg in self.args:
             arg.rename_var(old_name, new_name)
 
     def __str__(self):
+        # Преобразование операции в строку
         def need_brackets(arg):
             return not isinstance(arg, Variable) \
                 and not isinstance(arg, Predicate) \
                 and not (isinstance(arg, Operation) and arg.type == OpType.NOT and self.type != OpType.NOT)
 
         def add_opt_brackets(arg):
+            # Добавляет скобки при необходимости
             if need_brackets(arg):
                 return f'({arg})'
             return str(arg)
@@ -53,6 +61,7 @@ class Operation:
         return str(self)
 
     def __eq__(self, other):
+        # Проверяет равенство двух операций
         if not isinstance(other, Operation):
             return False
         if self.type != other.type or len(self.args) != len(other.args):
@@ -63,6 +72,7 @@ class Operation:
         return True
 
     def __deepcopy__(self, memo):
+        # Создает глубокую копию операции
         cls = self.__class__
         result = cls.__new__(cls)
         memo[id(self)] = result

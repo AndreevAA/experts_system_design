@@ -6,49 +6,37 @@ from models.operation import *
 from models.quantifier import *
 from models import *
 
-pp.ParserElement.enablePackrat()
-
+pp.ParserElement.enablePackrat()  # Включаем Packrat Parsing для улучшения производительности парсинга
 
 def create_operation(t):
-    opTypes = set(t[0][1::2])
-    assert len(opTypes) == 1, "Invalid formula"
+    opTypes = set(t[0][1::2])  # Получаем уникальные типы операций
+    assert len(opTypes) == 1, "Invalid formula"  # Проверяем, что только один тип операции
     if '→' in opTypes:
-        assert len(t[0][0::2]) == 2, "Invalid formula"
-    return Operation(sym2type(t[0][1]), t[0][0::2])
-
+        assert len(t[0][0::2]) == 2, "Invalid formula"  # Проверяем, что в импликации два операнда
+    return Operation(sym2type(t[0][1]), t[0][0::2])  # Возвращаем объект Operation
 
 # Операнды
-variable = pp.Regex(r'[a-zA-Zа-яА-ЯёЁ0-9]+').setResultsName('variable')
-variable = variable.setParseAction(lambda t: Variable(t[0]))
+variable = pp.Regex(r'[a-zA-Zа-яА-ЯёЁ0-9]+').setResultsName('variable').setParseAction(lambda t: Variable(t[0]))  # Определяем переменную
 
-arguments = pp.Group(pp.Suppress('(') + pp.delimitedList(variable) + pp.Suppress(')')).setResultsName('arguments')
+arguments = pp.Group(pp.Suppress('(') + pp.delimitedList(variable) + pp.Suppress(')')).setResultsName('arguments')  # Определяем аргументы предиката
 
-predicate = pp.Regex(r'[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ0-9]*') + arguments
-predicate = predicate.setResultsName('predicate')
-predicate = predicate.setParseAction(lambda t: Predicate(t[0], t.arguments.asList()))
+predicate = pp.Regex(r'[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ0-9]*') + arguments  # Определяем предикат
+predicate = predicate.setResultsName('predicate').setParseAction(lambda t: Predicate(t[0], t.arguments.asList()))  # Создаем объект Predicate
 
-operand = predicate | variable
+operand = predicate | variable  # Определяем операнды как предикаты или переменные
 
-formula = pp.Forward()
-quantifiers = pp.oneOf("∃ ∀") + variable + formula
-quantifiers.setParseAction(lambda t:
-                           Quantifier(sym2type(t[0]), t[1], t[2]))
+formula = pp.Forward()  # Определяем формулу, которую будем парсить
+quantifiers = pp.oneOf("∃ ∀") + variable + formula  # Определяем кванторы
+quantifiers.setParseAction(lambda t: Quantifier(sym2type(t[0]), t[1], t[2]))  # Создаем объект Quantifier
 
-expr = pp.infixNotation(operand | quantifiers, [
-    ("¬", 1, pp.opAssoc.RIGHT, lambda t: Operation(OpType.NOT, [t[0][1]])),
-    (pp.oneOf("& | → ="), 2, pp.opAssoc.LEFT, create_operation),
+expr = pp.infixNotation(operand | quantifiers, [  # Определяем выражение с учетом инфиксной нотации
+    ("¬", 1, pp.opAssoc.RIGHT, lambda t: Operation(OpType.NOT, [t[0][1]])),  # Обработка операции "НЕ"
+    (pp.oneOf("& | → ="), 2, pp.opAssoc.LEFT, create_operation),  # Обработка бинарных операций
 ])
-formula <<= expr
-
-
-# formula = pp.infix_notation(operand, [
-#     (pp.one_of("∃ ∀"), 1, pp.opAssoc.RIGHT, lambda t: Quantifier(sym2type(t[0][0]), t[0][1])),
-#     ("¬", 1, pp.opAssoc.RIGHT, lambda t: Operation(OpType.NOT, [t[0][1]])),
-#     (pp.one_of("& | → ="), 2, pp.opAssoc.LEFT, lambda t: Operation(sym2type(t[0][1]), t[0][0::2])),
-# ])
-
+formula <<= expr  # Присваиваем выражение формуле
 
 def main():
+    # Пример парсинга различных формул и вывод результата
     res = formula.parseString('(p2(x) & p3(x) & p4(x)) → p5(x)')
     print(res[0])
 
@@ -73,6 +61,5 @@ def main():
     res = formula.parseString('¬(x & y & z)')
     print(res[0])
 
-
 if __name__ == '__main__':
-    main()
+    main()  # Запускаем главную функцию

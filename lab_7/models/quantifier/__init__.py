@@ -2,6 +2,7 @@ import typing
 from enum import Enum
 from copy import deepcopy
 from models.optype import *
+from models import *
 
 class Quantifier:
     def __init__(self, op_type: OpType, var, op):

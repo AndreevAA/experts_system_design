@@ -2,6 +2,11 @@ import copy
 from collections import defaultdict
 from parser import *
 from models import *
+from models.optype import *
+from models.variable import *
+from models.predicate import *
+from models.quantifier import *
+from models import *
 
 
 def normalize_formula(op: Operation):

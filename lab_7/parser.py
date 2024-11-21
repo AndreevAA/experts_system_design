@@ -1,4 +1,8 @@
 import pyparsing as pp
+from models.optype import *
+from models.variable import *
+from models.predicate import *
+from models.operation import *
 from models import *
 
 pp.ParserElement.enablePackrat()

@@ -1,3 +1,8 @@
+import typing
+from enum import Enum
+from copy import deepcopy
+
+
 class Variable:
     def __init__(self, name, negative=False):
         self.name = name

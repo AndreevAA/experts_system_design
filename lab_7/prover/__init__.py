@@ -1,7 +1,13 @@
 from typing import *
 import copy
 from parser import *
-from models import *
+from models.predicate import *
+from models.operation import *
+from models.quantifier import *
+from models.rule import *
+from models.variable import *
+from models.optype import *
+
 
 
 class Prover:

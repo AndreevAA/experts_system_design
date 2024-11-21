@@ -1,7 +1,10 @@
 import typing
 from enum import Enum
 from copy import deepcopy
-
+from models.optype import *
+from models import *
+from models.variable import *
+from models.predicate import *
 
 class Operation:
     def __init__(self, op_type: OpType, args: typing.List):

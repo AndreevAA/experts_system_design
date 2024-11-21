@@ -2,12 +2,13 @@ from prover import *
 from tests import *
 from prepare import *
 
+
 def main():
     facts, rules, goal = Tests().test_5()
     facts, rules, goal = prepare(facts, rules, goal)
 
-    p = Prover(facts, rules)
-    matched = p.prove(goal)
+    matched = Prover(facts, rules).prove(goal)
+
     if not matched:
         print('ЛОЖЬ')
     else:

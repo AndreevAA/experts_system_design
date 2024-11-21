@@ -1,3 +1,9 @@
+import typing
+from enum import Enum
+from copy import deepcopy
+from models.optype import *
+from models.operation import *
+from models import *
 
 class Rule:
     """

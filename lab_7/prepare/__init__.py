@@ -1,5 +1,6 @@
 from parser import *
 from models import *
+from models.rule import *
 
 def prepare(facts, rules, goal):
     facts = [r.strip().rstrip() for r in facts.split('\n') if len(r.strip().rstrip()) > 0]

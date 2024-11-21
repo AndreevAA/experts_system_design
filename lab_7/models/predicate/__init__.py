@@ -1,3 +1,9 @@
+import typing
+from enum import Enum
+from copy import deepcopy
+from models.variable import *
+
+
 class Predicate:
     def __init__(self, name, args: typing.List[Variable], negative=False):
         self.name = name

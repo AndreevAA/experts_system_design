@@ -18,6 +18,7 @@ class HyperGraphSearcher:
         self.found = False  # флаг решения
 
     def search_from_target(self, input_atoms, target_atom):
+
         self.table = Table()
 
         # Добавляем целевой атом в список открытых атомов
@@ -32,51 +33,48 @@ class HyperGraphSearcher:
         while not self.found and len(self.opened_atoms) != 0:
             print('\nТекущая подцель', current)
 
-            print(f"Список доказанных атомов: ", self.proven_atoms)
-            print(f"Список доказанных правил: ", self.proven_rules)
+            print(f"Список доказанных атомов: ", self.proven_atoms, f"\nСписок доказанных правил: ", self.proven_rules)
 
-            end_vertex = True  # Флаг все атомы доказаны
-            prove_num = False  # Флаг доказанного номера правила
-            check_unif = True  # Флаг нужно провести унификацию
+            are_atoms_proved = True  # Флаг все атомы доказаны
+            tmp_rule_proved_number = False  # Флаг доказанного номера правила
+            is_unification_needed = True  # Флаг нужно провести унификацию
 
             # Пока не конец базы правил
             for num, rule in self.rules.items():
 
                 # Метод потомков, ищем правило в базе правил, выходной атом которого унфицируется с подцелью
-                if check_unif:
-                    if Unification(self.table, rule.output_vertex, current).run():
-                        print('Номер текущего правила: ', num)
-                        print("Унификация выполнена:", rule.output_vertex, current)
-                        print('Tаблица подстановок:', self.table.variables)
-                        print('Таблица cвязей:', self.table.links)
-                        check_unif = False
+                if is_unification_needed:
+
+                    # Проверка успешности унификации
+                    is_unification_success = Unification(self.table, rule.output_vertex, current).run()
+
+                    if is_unification_success:
+                        print('Номер текущего правила: ', num, "\nУнификация выполнена:", rule.output_vertex, current, '\nTаблица подстановок:', self.table.variables, '\nТаблица cвязей:', self.table.links)
+                        is_unification_needed = False
                         self.used_atoms.insert(0, current)
 
-                if not check_unif:
+                if not is_unification_needed:
                     # Смотрим входные атомы для текущего правила
                     for node in rule.input_atoms:
+                        
                         # Проверяем входят ли входные атомы в список закрытых атомов
                         if node not in self.used_atoms:
                             print('\nАтом', node)
-                            end_vertex = False
-                            prove_num = False
+                            are_atoms_proved, tmp_rule_proved_number = False, False
 
                             # Если номер текущего правила не в списке открытых, добавляем номер правила в список открытых
-                            if num not in self.opened_rules:
-                                self.opened_rules.insert(0, num)
+                            if num not in self.opened_rules: self.opened_rules.insert(0, num)
 
                             # Пока не конец базы фактов
                             for proven in self.proven_atoms:
                                 if Unification(self.table, node, proven).run():
-                                    print("Атом", node, "уже доказан")
-                                    print('Tаблица подстановок:', self.table.variables)
-                                    print('Таблица cвязей:', self.table.links)
+                                    print("Атом", node, "уже доказан\n", 'Tаблица подстановок:', self.table.variables, "\n", 'Таблица cвязей:', self.table.links)
 
-                                    prove_num = True
+                                    tmp_rule_proved_number = True
                                     self.used_atoms.insert(0, node)
                                     break
 
-                            if prove_num == False:
+                            if tmp_rule_proved_number == False:
                                 # Если атом текущего правила не в списке открытых, добавляем атом в список открытых
                                 if node not in self.opened_atoms and node not in self.used_atoms:
                                     self.opened_atoms.insert(0, node)
@@ -84,12 +82,12 @@ class HyperGraphSearcher:
                                 # Меняем подцель, берем из головы
                                 current = self.opened_atoms[0]
                                 print('Атом становится новой подцелью')
-                                check_unif = True
+                                is_unification_needed = True
                                 # Переходим к раскрытию новой подцели
                                 break
 
                     # Если все атомы в списке фактов (закрытых) -> разметка
-                    if prove_num:
+                    if tmp_rule_proved_number:
                         # Распространение
                         for i in range(len(current.terminals)):
                             current.terminals[i] = self.table.variables[str(current.terminals[i])]
@@ -100,8 +98,7 @@ class HyperGraphSearcher:
                             if len(self.opened_rules) != 0:
                                 self.proven_rules.append(self.opened_rules.pop(0))
 
-                        print(f"Список доказанных атомов: ", self.proven_atoms)
-                        print(f"Список доказанных правил: ", self.proven_rules)
+                        print(f"Список доказанных атомов: ", self.proven_atoms, f"\nСписок доказанных правил: ", self.proven_rules)
 
                         # Выбираем следующий атом (подцель) из головы
                         if len(self.opened_atoms) != 0 and len(self.opened_rules) != 0:
@@ -120,7 +117,7 @@ class HyperGraphSearcher:
                         break
 
             # Если все атомы в правиле доказаны
-            if end_vertex:
+            if are_atoms_proved:
                 print('Доказали все атомы в правиле, правило доказано!')
 
                 if len(self.opened_atoms) != 0:
@@ -132,8 +129,7 @@ class HyperGraphSearcher:
                         self.proven_rules.append(self.opened_rules.pop(0))
 
                 print('\nКонечные списки')
-                print(f"Список доказанных атомов: ", self.proven_atoms)
-                print(f"Список доказанных правил: ", self.proven_rules)
+                print(f"Список доказанных атомов: ", self.proven_atoms, f"\nСписок доказанных правил: ", self.proven_rules)
 
                 if len(self.opened_atoms) != 0:
                     # Меняем подцель
